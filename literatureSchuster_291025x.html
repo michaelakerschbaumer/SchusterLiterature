@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Literatursammlung Univ. Prof. Dr. Reinhard Schuster</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .language-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .lang-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin-bottom: 15px;
+        }
+
+        .header-info {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e8ed;
+            color: #34495e;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .header-info strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .header-info a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .header-info a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .header-info .pdf-btn,
+        .header-info .pdf-btn:hover,
+        .header-memorial .pdf-btn,
+        .header-memorial .pdf-btn:hover {
+            color: white !important;
+            text-decoration: none !important;
+        }
+
+        .header-memorial {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .pdf-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white !important;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
+        }
+
+        .pdf-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            color: white !important;
+        }
+
+        .pdf-btn::before {
+            content: "📄";
+            font-size: 16px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 30px;
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #ff7675;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .search-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .search-field {
+            position: relative;
+        }
+
+        .search-field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .search-field input, .search-field select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-field input:focus, .search-field select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .search-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+            transform: translateY(-1px);
+        }
+
+        .results-section {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .results-container {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .entry {
+            padding: 20px 30px;
+            border-bottom: 1px solid #ecf0f1;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .entry:hover {
+            background: #f8f9fa;
+        }
+
+        .entry:last-child {
+            border-bottom: none;
+        }
+
+        .entry-header {
+            flex-shrink: 0;
+        }
+
+        .entry-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .entry-details {
+            display: flex;
+            gap: 30px;
+            flex: 1;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            color: #34495e;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .entry-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .view-card-btn {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .view-card-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(116, 185, 255, 0.4);
+        }
+
+        .request-btn {
+            background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .request-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.4);
+        }
+
+        .notes {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 4px solid #74b9ff;
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+            color: #2d3436;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 30px;
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+
+        .stats {
+            text-align: center;
+            margin: 20px 0;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 2% auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .close:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 30px;
+            max-height: calc(90vh - 100px);
+            overflow-y: auto;
+        }
+
+        .card-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .language-switcher {
+                position: static;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+            
+            .search-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .entry {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .entry-details {
+                width: 100%;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .entry-actions {
+                width: 100%;
+            }
+            
+            .view-card-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="language-switcher">
+                <button class="lang-btn active" onclick="setLanguage('de')" id="btn-de">Deutsch</button>
+                <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">English</button>
+            </div>
+            <h1 data-de="Literatursammlung Univ. Prof. Dr. Reinhard Schuster" data-en="Literature Collection Univ. Prof. Dr. Reinhard Schuster">Literatursammlung Univ. Prof. Dr. Reinhard Schuster</h1>
+            <p data-de="Diese Datenbank befindet sich erst in der Testphase (Oktober 2025)" data-en="This database is currently in the test phase (October 2025)">Diese Datenbank befindet sich erst in der Testphase (Oktober 2025)</p>
+            <div class="header-info">
+                <strong data-de="Kontakt" data-en="Contact">Kontakt</strong>: 
+                <span data-de="Michaela Kerschbaumer" data-en="Michaela Kerschbaumer">Michaela Kerschbaumer</span><br>
+                <a href="https://bodenbiologie.uni-graz.at" target="_blank" rel="noopener noreferrer">bodenbiologie.uni-graz.at</a>
+                <div class="header-memorial">
+                    <a href="https://cloud.uni-graz.at/public.php/dav/files/LQcmMzTbxsmEgLB/Schuster_Reinhart_MittNatVerSt_153_0013-0021.pdf" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="pdf-btn"
+                       data-de="In Memoriam Reinhard Schuster (1930–2023)" 
+                       data-en="In Memoriam Reinhard Schuster (1930–2023)">
+                        In Memoriam Reinhard Schuster (1930–2023)
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="errorContainer"></div>
+
+        <div class="search-section">
+            <div class="search-grid">
+                <div class="search-field">
+                    <label for="searchKeywords" data-de="Stichwörter" data-en="Keywords">Stichwörter</label>
+                    <input type="text" id="searchKeywords" data-placeholder-de="Suchbegriffe eingeben..." data-placeholder-en="Enter search terms..." placeholder="Suchbegriffe eingeben...">
+                </div>
+                <div class="search-field">
+                    <label for="searchAuthor" data-de="Autor" data-en="Author">Autor</label>
+                    <input type="text" id="searchAuthor" data-placeholder-de="Autor suchen..." data-placeholder-en="Search author..." placeholder="Autor suchen...">
+                </div>
+                <div class="search-field">
+                    <label for="searchJournal" data-de="Journal" data-en="Journal">Journal</label>
+                    <input type="text" id="searchJournal" data-placeholder-de="Journal suchen..." data-placeholder-en="Search journal..." placeholder="Journal suchen...">
+                </div>
+                <div class="search-field">
+                    <label for="searchYearFrom" data-de="Jahr von" data-en="Year from">Jahr von</label>
+                    <input type="text" id="searchYearFrom" data-placeholder-de="z.B. 1990" data-placeholder-en="e.g. 1990" placeholder="z.B. 1990">
+                </div>
+                <div class="search-field">
+                    <label for="searchYearTo" data-de="Jahr bis" data-en="Year to">Jahr bis</label>
+                    <input type="text" id="searchYearTo" data-placeholder-de="z.B. 2000" data-placeholder-en="e.g. 2000" placeholder="z.B. 2000">
+                </div>
+            </div>
+            <div class="search-buttons">
+                <button class="btn btn-primary" onclick="performSearch()" data-de="Suchen" data-en="Search">Suchen</button>
+                <button class="btn btn-secondary" onclick="clearSearch()" data-de="Zurücksetzen" data-en="Reset">Zurücksetzen</button>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <div class="results-header">
+                <span id="resultsCount" data-de="Daten werden geladen..." data-en="Loading data...">Daten werden geladen...</span>
+            </div>
+            <div class="stats" id="stats"></div>
+            <div class="results-container" id="resultsContainer">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p data-de="Literaturdaten werden geladen..." data-en="Loading literature data...">Literaturdaten werden geladen...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cardModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 data-de="Katalogkarte" data-en="Catalog Card">Katalogkarte</h2>
+                <button class="close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <img id="cardImage" src="" alt="Katalogkarte" class="card-image">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let literatureData = [];
+        let currentResults = [];
+        let currentLanguage = 'de';
+
+        const translations = {
+            de: {
+                loadingData: 'Daten werden geladen...',
+                loadingLiterature: 'Literaturdaten werden geladen...',
+                noResults: 'Keine Ergebnisse gefunden',
+                tryOtherTerms: 'Bitte versuchen Sie es mit anderen Suchbegriffen.',
+                couldNotLoad: 'Daten konnten nicht geladen werden',
+                checkConsole: 'Bitte überprüfen Sie die Konsole für weitere Details.',
+                errorLoading: 'Fehler beim Laden',
+                entriesFound: 'Einträge gefunden',
+                searched: 'Durchsucht',
+                totalEntries: 'Gesamteinträge',
+                number: 'Nr.',
+                title: 'Titel',
+                noTitle: 'Kein Titel',
+                author: 'Autor',
+                year: 'Jahr',
+                journal: 'Journal',
+                pages: 'Seiten',
+                volume: 'Band',
+                handwritten: 'Handschriftlich',
+                viewCard: 'Katalogkarte anzeigen',
+                requestWork: 'Werk anfragen',
+                notes: 'Notizen',
+                requestSubject: 'Anfrage: Literatur Nr.',
+                requestBodyGreeting: 'Sehr geehrte Damen und Herren,\n\nich möchte gerne folgendes Werk aus der Literatursammlung von Univ. Prof. Dr. Reinhard Schuster anfragen:\n\nNummer:',
+                requestBodyTitle: '\nTitel:',
+                requestBodyAuthor: '\nAutor:',
+                requestBodyClosing: '\n\nBitte teilen Sie mir mit, wie ich das Werk einsehen kann.\n\nMit freundlichen Grüßen',
+                errorMessage: 'Die Literaturdaten konnten nicht geladen werden. Bitte stellen Sie sicher, dass die Datei "literature-data.json" im gleichen Ordner wie diese HTML-Datei liegt und über einen Webserver geöffnet wird (z.B. python -m http.server 8000).'
+            },
+            en: {
+                loadingData: 'Loading data...',
+                loadingLiterature: 'Loading literature data...',
+                noResults: 'No results found',
+                tryOtherTerms: 'Please try different search terms.',
+                couldNotLoad: 'Data could not be loaded',
+                checkConsole: 'Please check the console for more details.',
+                errorLoading: 'Error loading',
+                entriesFound: 'entries found',
+                searched: 'Searched',
+                totalEntries: 'total entries',
+                number: 'No.',
+                title: 'Title',
+                noTitle: 'No Title',
+                author: 'Author',
+                year: 'Year',
+                journal: 'Journal',
+                pages: 'Pages',
+                volume: 'Volume',
+                handwritten: 'Handwritten',
+                viewCard: 'View catalog card',
+                requestWork: 'Request work',
+                notes: 'Notes',
+                requestSubject: 'Request: Literature No.',
+                requestBodyGreeting: 'Dear Sir or Madam,\n\nI would like to request the following work from the literature collection of Univ. Prof. Dr. Reinhard Schuster:\n\nNumber:',
+                requestBodyTitle: '\nTitle:',
+                requestBodyAuthor: '\nAuthor:',
+                requestBodyClosing: '\n\nPlease let me know how I can access this work.\n\nBest regards',
+                errorMessage: 'The literature data could not be loaded. Please ensure that the file "literature-data.json" is in the same folder as this HTML file and is opened via a web server (e.g. python -m http.server 8000).'
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            document.documentElement.lang = lang;
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('btn-' + lang).classList.add('active');
+            
+            document.querySelectorAll('[data-' + lang + ']').forEach(element => {
+                if (element.tagName === 'INPUT') {
+                    element.placeholder = element.getAttribute('data-placeholder-' + lang);
+                } else if (element.tagName === 'BUTTON') {
+                    element.textContent = element.getAttribute('data-' + lang);
+                } else {
+                    element.textContent = element.getAttribute('data-' + lang);
+                }
+            });
+            
+            displayResults();
+        }
+
+        async function loadData() {
+            try {
+                const response = await fetch('literature-data.json', { cache: 'no-store' });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+                }
+                
+                literatureData = await response.json();
+                currentResults = literatureData;
+                
+                displayResults();
+                
+                console.log(`Erfolgreich ${literatureData.length} Einträge geladen`);
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der Daten:', error);
+                showError(translations[currentLanguage].errorMessage);
+            }
+        }
+
+        function showError(message) {
+            const errorContainer = document.getElementById('errorContainer');
+            errorContainer.innerHTML = `
+                <div class="error-message">
+                    <strong>${currentLanguage === 'de' ? 'Fehler' : 'Error'}:</strong> ${message}
+                </div>
+            `;
+            
+            document.getElementById('resultsContainer').innerHTML = `
+                <div class="no-results">
+                    <h3>${translations[currentLanguage].couldNotLoad}</h3>
+                    <p>${translations[currentLanguage].checkConsole}</p>
+                </div>
+            `;
+            
+            document.getElementById('resultsCount').textContent = translations[currentLanguage].errorLoading;
+        }
+
+        function performSearch() {
+            const keywords = document.getElementById('searchKeywords').value.toLowerCase().trim();
+            const author = document.getElementById('searchAuthor').value.toLowerCase().trim();
+            const journal = document.getElementById('searchJournal').value.toLowerCase().trim();
+            const yearFrom = document.getElementById('searchYearFrom').value.trim();
+            const yearTo = document.getElementById('searchYearTo').value.trim();
+
+            currentResults = literatureData.filter(entry => {
+                const matchesKeywords = !keywords || 
+                    (entry.Title && entry.Title.toLowerCase().includes(keywords)) ||
+                    (entry.Autor && entry.Autor.toLowerCase().includes(keywords)) ||
+                    (entry.Journal && entry.Journal.toLowerCase().includes(keywords)) ||
+                    (entry.Notiz && entry.Notiz.toLowerCase().includes(keywords));
+
+                const matchesAuthor = !author || 
+                    (entry.Autor && entry.Autor.toLowerCase().includes(author));
+
+                const matchesJournal = !journal || 
+                    (entry.Journal && entry.Journal.toLowerCase().includes(journal));
+
+                let matchesYear = true;
+                if (yearFrom || yearTo) {
+                    const entryYear = parseInt(entry.Jahr);
+                    if (!isNaN(entryYear)) {
+                        if (yearFrom && yearTo) {
+                            matchesYear = entryYear >= parseInt(yearFrom) && entryYear <= parseInt(yearTo);
+                        } else if (yearFrom) {
+                            matchesYear = entryYear >= parseInt(yearFrom);
+                        } else if (yearTo) {
+                            matchesYear = entryYear <= parseInt(yearTo);
+                        }
+                    } else {
+                        matchesYear = false;
+                    }
+                }
+
+                return matchesKeywords && matchesAuthor && matchesJournal && matchesYear;
+            });
+
+            displayResults();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchKeywords').value = '';
+            document.getElementById('searchAuthor').value = '';
+            document.getElementById('searchJournal').value = '';
+            document.getElementById('searchYearFrom').value = '';
+            document.getElementById('searchYearTo').value = '';
+            currentResults = literatureData;
+            displayResults();
+        }
+
+        function displayResults() {
+            const container = document.getElementById('resultsContainer');
+            const resultsCount = document.getElementById('resultsCount');
+            const stats = document.getElementById('stats');
+            const t = translations[currentLanguage];
+
+            if (currentResults.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <h3>${t.noResults}</h3>
+                        <p>${t.tryOtherTerms}</p>
+                    </div>
+                `;
+                resultsCount.textContent = t.noResults;
+                stats.textContent = '';
+                return;
+            }
+
+            resultsCount.textContent = `${currentResults.length} ${t.entriesFound}`;
+            stats.textContent = `${t.searched}: ${literatureData.length} ${t.totalEntries}`;
+
+            container.innerHTML = currentResults.map(entry => `
+                <div class="entry">
+                    <div class="entry-header">
+                        <div class="entry-number">${t.number} ${entry.Number || 'N/A'}</div>
+                    </div>
+                    <div class="entry-details">
+                        <div class="detail-item">
+                            <div class="detail-label">${t.title}</div>
+                            <div class="detail-value">${entry.Title || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">${t.author}</div>
+                            <div class="detail-value">${entry.Autor || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">${t.journal}</div>
+                            <div class="detail-value">${entry.Journal || 'N/A'}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">${t.year}</div>
+                            <div class="detail-value">${entry.Jahr || 'N/A'}</div>
+                        </div>
+                    </div>
+                    <div class="entry-actions">
+                        <button class="view-card-btn"
+                                data-action="view"
+                                data-url="${(entry.BildUrl || '').replace(/'/g, "\\'")}"
+                                data-title="${(entry.Title || '').replace(/'/g, "\\'")}">
+                            ${t.viewCard}
+                        </button>
+                        <button class="request-btn"
+                                data-action="request"
+                                data-number="${entry.Number || 'N/A'}"
+                                data-title="${(entry.Title || '').replace(/'/g, "\\'")}"
+                                data-author="${(entry.Autor || '').replace(/'/g, "\\'")}">
+                            ${t.requestWork}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function viewCard(url, title) {
+            document.getElementById('cardImage').src = url;
+            document.getElementById('cardModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('cardModal').style.display = 'none';
+        }
+
+        function requestWork(number, title, author) {
+            const t = translations[currentLanguage];
+            const subject = `${t.requestSubject} ${number}`;
+            const body = `${t.requestBodyGreeting} ${number}${t.requestBodyTitle} ${title}${t.requestBodyAuthor} ${author}${t.requestBodyClosing}`;
+
+            const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoUrl;
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('cardModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        const FALLBACK_IMG = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 140"><rect width="200" height="140" fill="#ecf0f1"/><text x="50%" y="50%" fill="#7f8c8d" font-size="12" text-anchor="middle" dy=".3em">kein Bild...</text></svg>'
+        );
+
+        document.getElementById('resultsContainer').addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-action]');
+          if (!btn) return;
+
+          const action = btn.dataset.action;
+          const t = translations[currentLanguage];
+
+          if (action === 'view') {
+            const url = (btn.dataset.url || '').trim();
+            const img = document.getElementById('cardImage');
+            img.src = url || FALLBACK_IMG;
+            img.onerror = () => { img.src = FALLBACK_IMG; };
+            document.getElementById('cardModal').style.display = 'block';
+          }
+
+          if (action === 'request') {
+            const number = btn.dataset.number || 'N/A';
+            const title  = btn.dataset.title  || '';
+            const author = btn.dataset.author || '';
+
+            const subject = `${t.requestSubject} ${number}`;
+            const body = `${t.requestBodyGreeting} ${number}${t.requestBodyTitle} ${title}${t.requestBodyAuthor} ${author}${t.requestBodyClosing}`;
+
+            try {
+              const a = document.createElement('a');
+              a.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+              a.style.display = 'none';
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+            } catch (err) {
+              console.warn('mailto konnte nicht geöffnet werden:', err);
+              alert('E-Mail konnte nicht geöffnet werden. Ist ein E-Mail-Programm verknüpft?');
+            }
+          }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInputs = ['searchKeywords', 'searchAuthor', 'searchJournal', 'searchYearFrom', 'searchYearTo'];
+            searchInputs.forEach(id => {
+                document.getElementById(id).addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        performSearch();
+                    }
+                });
+            });
+
+            loadData();
+        });
+    </script>
+</body>
+</html>

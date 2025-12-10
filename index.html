@@ -737,7 +737,10 @@
             
             displayResults();
         }
-
+            function toggleAbout() {
+        const box = document.getElementById('aboutInfo');
+        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    }
         async function loadData() {
             try {
                 const response = await fetch('literature-data.json', { cache: 'no-store' });
@@ -828,10 +831,7 @@
             currentResults = literatureData;
             displayResults();
         }
-            function toggleAbout() {
-        const box = document.getElementById('aboutInfo');
-        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
-    }
+
         function displayResults() {
             const container = document.getElementById('resultsContainer');
             const resultsCount = document.getElementById('resultsCount');

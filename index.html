@@ -507,6 +507,31 @@
                 justify-content: center;
             }
         }
+            .about-btn {
+        margin: 20px auto 0;
+        display: block;
+        background: transparent;
+        border: none;
+        color: #7f8c8d;
+        font-size: 12px;
+        text-decoration: underline;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .about-btn:hover {
+        color: #34495e;
+    }
+
+    .about-info {
+        display: none;
+        margin: 10px auto 0;
+        max-width: 800px;
+        font-size: 12px;
+        color: #7f8c8d;
+        text-align: center;
+        padding: 10px 15px;
+    }
     </style>
 </head>
 <body>
@@ -578,7 +603,38 @@
                 </div>
             </div>
         </div>
-    </div>
+            <div class="results-section">
+            <div class="results-header">
+                <span id="resultsCount" data-de="Daten werden geladen..." data-en="Loading data...">Daten werden geladen...</span>
+            </div>
+            <div class="stats" id="stats"></div>
+            <div class="results-container" id="resultsContainer">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p data-de="Literaturdaten werden geladen..." data-en="Loading literature data...">Literaturdaten werden geladen...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 🔻 HIER EINSETZEN (direkt nach results-section, vor </div> des Containers!) -->
+        <button 
+            class="about-btn" 
+            type="button"
+            onclick="toggleAbout()"
+            data-de="Über diese Anwendung"
+            data-en="About this application">
+            Über diese Anwendung
+        </button>
+
+        <div id="aboutInfo" class="about-info">
+            Developed within the project "BIOMES-Pillars Of Soil" (Austrian Academy of Sciences). 
+            Server access kindly provided by AG Weber (thanks to Philipp Faulhammer). 
+            All rights reserved by Michaela Kerschbaumer.
+        </div>
+        <!-- 🔺 BIS HIER -->
+        
+    </div> <!-- Ende .container -->
+</div>
 
     <div id="cardModal" class="modal">
         <div class="modal-content">
@@ -772,7 +828,10 @@
             currentResults = literatureData;
             displayResults();
         }
-
+            function toggleAbout() {
+        const box = document.getElementById('aboutInfo');
+        box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    }
         function displayResults() {
             const container = document.getElementById('resultsContainer');
             const resultsCount = document.getElementById('resultsCount');

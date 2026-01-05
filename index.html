@@ -46,28 +46,24 @@
             justify-content: flex-end;
         }
 
-        .info-btn {
+        .lang-btn {
             padding: 8px 16px;
-            border: 2px solid #16a085;
+            border: 2px solid #667eea;
             background: white;
-            color: #16a085;
+            color: #667eea;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            font-size: 14px;
-            white-space: nowrap;
         }
 
-        .info-btn:hover {
-            background: linear-gradient(135deg, #16a085 0%, #0e5c49 100%);
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            transform: translateY(-2px);
         }
 
-        .info-btn::before {
-            content: "ℹ️ ";
-            margin-right: 4px;
+        .lang-btn:hover {
+            transform: translateY(-2px);
         }
 
         .lang-btn {
@@ -170,7 +166,42 @@
             font-size: 16px;
         }
 
-        /* Info Modal Styles */
+        /* Footer Styles */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        .info-btn {
+            padding: 12px 25px;
+            border: 2px solid #16a085;
+            background: white;
+            color: #16a085;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-btn:hover {
+            background: linear-gradient(135deg, #16a085 0%, #0e5c49 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(22, 160, 133, 0.3);
+        }
+
+        .info-btn::before {
+            content: "ℹ️";
+        }
         #infoModal {
             display: none;
             position: fixed;
@@ -335,9 +366,19 @@
                 gap: 5px;
             }
 
-            .info-btn, .lang-btn {
+            .lang-btn {
                 padding: 6px 12px;
                 font-size: 12px;
+            }
+
+            .footer {
+                padding: 20px;
+                margin-top: 30px;
+            }
+
+            .info-btn {
+                padding: 10px 20px;
+                font-size: 14px;
             }
         }
 
@@ -711,12 +752,11 @@
     <div class="container">
         <div class="header">
             <div class="language-switcher">
-                <button class="info-btn" id="infoButton" onclick="openInfoModal()" data-de="Info" data-en="Info">Info</button>
                 <button class="lang-btn active" onclick="setLanguage('de')" id="btn-de">Deutsch</button>
                 <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">English</button>
             </div>
             <h1 data-de="Literatursammlung Univ. Prof. Dr. Reinhard Schuster" data-en="Literature Collection Univ. Prof. Dr. Reinhard Schuster">Literatursammlung Univ. Prof. Dr. Reinhard Schuster</h1>
-            <p data-de="Diese Datenbank befindet sich in der Testphase (Stand: Jänner 2026). Etwaige OCR-Fehler aus den digitalisierten Karteikarten sowie fehlerhafte Titel oder fehlende Angaben werden laufend korrigiert und ergänzt." data-en="This database is currently in the testing phase (November 2025). Any OCR errors from the digitized index cards, as well as incorrect titles or missing information, are being continuously corrected and updated">Diese Datenbank befindet sich in der Testphase (Stand: November 2025). Etwaige OCR-Fehler aus den digitalisierten Karteikarten sowie fehlerhafte Titel oder fehlende Angaben werden laufend korrigiert und ergänzt.</p>
+            <p data-de="Diese Datenbank befindet sich in der Testphase (Stand: Jänner 2026). Etwaige OCR-Fehler aus den digitalisierten Karteikarten sowie fehlerhafte Titel oder fehlende Angaben werden laufend korrigiert und ergänzt." data-en="This database is currently in the testing phase (January 2026). Any OCR errors from the digitized index cards, as well as incorrect titles or missing information, are being continuously corrected and updated">Diese Datenbank befindet sich in der Testphase (Stand: Jänner 2026). Etwaige OCR-Fehler aus den digitalisierten Karteikarten sowie fehlerhafte Titel oder fehlende Angaben werden laufend korrigiert und ergänzt.</p>
             <div class="header-info">
                 <strong data-de="Kontakt" data-en="Contact">Kontakt</strong>: 
                 <span data-de="Michaela Kerschbaumer" data-en="Michaela Kerschbaumer">Michaela Kerschbaumer</span><br>
@@ -779,6 +819,13 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <div class="container">
+        <div class="footer">
+            <button class="info-btn" id="infoButton" onclick="openInfoModal()" data-de="Über diese Datenbank" data-en="About this Database">Über diese Datenbank</button>
+        </div>
+    </div>
+
     <div id="cardModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -801,7 +848,7 @@
             <div class="info-content">
                 <h3 data-de="Finanzierung" data-en="Funding">Finanzierung</h3>
                 <div class="funding-box">
-                    <p data-de="Entwickelt im Rahmen des BIOMES-Projekts (Österreichische Akademie der Wissenschaften ÖAW). Serverzugang freundlicherweise bereitgestellt von AG Bettina Weber - Uni Graz (Dank an Dipl.-Ing. Philipp Faulhammer)." data-en="Developed within the BIOMES project (Austrian Academy of Sciences ÖAW). Server access kindly provided by AG Bettina Weber - UniGraz (thanks to Dipl.-Ing. Philipp Faulhammer).">Entwickelt im Rahmen des BIOMES-Projekts (Österreichische Akademie der Wissenschaften ÖAW). Serverzugang freundlicherweise bereitgestellt von AG Bettina Weber - Uni Graz (Dank an Dipl.-Ing. Philipp Faulhammer).</p>
+                    <p data-de="Entwickelt im Rahmen des BIOMES-Projekts (Österreichische Akademie der Wissenschaften ÖAW). Serverzugang freundlicherweise bereitgestellt von AG Bettina Weber - UniGraz (Dank an Dipl.-Ing. Philipp Faulhammer)." data-en="Developed within the BIOMES project (Austrian Academy of Sciences ÖAW). Server access kindly provided by AG Bettina Weber - UniGraz (thanks to Dipl.-Ing. Philipp Faulhammer).">Entwickelt im Rahmen des BIOMES-Projekts (Österreichische Akademie der Wissenschaften ÖAW). Serverzugang freundlicherweise bereitgestellt von AG Bettina Weber - UniGraz (Dank an Dipl.-Ing. Philipp Faulhammer).</p>
                 </div>
 
                 <div class="separator"></div>

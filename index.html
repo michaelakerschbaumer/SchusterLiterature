@@ -41,6 +41,33 @@
             right: 20px;
             display: flex;
             gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .info-btn {
+            padding: 8px 16px;
+            border: 2px solid #16a085;
+            background: white;
+            color: #16a085;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .info-btn:hover {
+            background: linear-gradient(135deg, #16a085 0%, #0e5c49 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .info-btn::before {
+            content: "ℹ️ ";
+            margin-right: 4px;
         }
 
         .lang-btn {
@@ -141,6 +168,177 @@
         .pdf-btn::before {
             content: "📄";
             font-size: 16px;
+        }
+
+        /* Info Modal Styles */
+        #infoModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .info-modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 40px;
+            border-radius: 15px;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .info-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 20px;
+        }
+
+        .info-modal-header h2 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin: 0;
+            font-weight: 300;
+        }
+
+        .close-info {
+            font-size: 32px;
+            font-weight: bold;
+            color: #7f8c8d;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-info:hover {
+            color: #e74c3c;
+        }
+
+        .info-content {
+            color: #34495e;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .info-content h3 {
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        .info-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .info-content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .info-content strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .funding-box {
+            background: linear-gradient(135deg, #f0f7f4 0%, #e8f5f0 100%);
+            border-left: 4px solid #16a085;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .funding-box p {
+            margin: 0;
+            font-style: italic;
+            color: #1a5d50;
+        }
+
+        .acknowledgment-box {
+            background: linear-gradient(135deg, #fef9e7 0%, #fef5d5 100%);
+            border-left: 4px solid #f39c12;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .acknowledgment-box p {
+            margin: 0;
+            color: #7d6608;
+        }
+
+        .separator {
+            border-bottom: 1px solid #e1e8ed;
+            margin: 25px 0;
+        }
+
+        @media (max-width: 768px) {
+            .info-modal-content {
+                margin: 10% auto;
+                padding: 25px;
+                max-width: 90%;
+                max-height: 90vh;
+            }
+
+            .info-modal-header h2 {
+                font-size: 1.4em;
+            }
+
+            .close-info {
+                width: 35px;
+                height: 35px;
+                font-size: 28px;
+            }
+
+            .info-content {
+                font-size: 14px;
+            }
+
+            .language-switcher {
+                top: 15px;
+                right: 15px;
+                gap: 5px;
+            }
+
+            .info-btn, .lang-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
         }
 
         .loading {
@@ -513,11 +711,12 @@
     <div class="container">
         <div class="header">
             <div class="language-switcher">
+                <button class="info-btn" id="infoButton" onclick="openInfoModal()" data-de="Info" data-en="Info">Info</button>
                 <button class="lang-btn active" onclick="setLanguage('de')" id="btn-de">Deutsch</button>
                 <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">English</button>
             </div>
             <h1 data-de="Literatursammlung Univ. Prof. Dr. Reinhard Schuster" data-en="Literature Collection Univ. Prof. Dr. Reinhard Schuster">Literatursammlung Univ. Prof. Dr. Reinhard Schuster</h1>
-            <p data-de="Diese Datenbank befindet sich in der Testphase (Stand: November 2025). Etwaige OCR-Fehler aus den digitalisierten Karteikarten sowie fehlerhafte Titel oder fehlende Angaben werden laufend korrigiert und ergänzt." data-en="This database is currently in the testing phase (November 2025). Any OCR errors from the digitized index cards, as well as incorrect titles or missing information, are being continuously corrected and updated">Diese Datenbank befindet sich in der Testphase (Stand: November 2025). Etwaige OCR-Fehler aus den digitalisierten Karteikarten sowie fehlerhafte Titel oder fehlende Angaben werden laufend korrigiert und ergänzt.</p>
+            <p data-de="Diese Datenbank befindet sich in der Testphase (Stand: Jänner 2026). Etwaige OCR-Fehler aus den digitalisierten Karteikarten sowie fehlerhafte Titel oder fehlende Angaben werden laufend korrigiert und ergänzt." data-en="This database is currently in the testing phase (November 2025). Any OCR errors from the digitized index cards, as well as incorrect titles or missing information, are being continuously corrected and updated">Diese Datenbank befindet sich in der Testphase (Stand: November 2025). Etwaige OCR-Fehler aus den digitalisierten Karteikarten sowie fehlerhafte Titel oder fehlende Angaben werden laufend korrigiert und ergänzt.</p>
             <div class="header-info">
                 <strong data-de="Kontakt" data-en="Contact">Kontakt</strong>: 
                 <span data-de="Michaela Kerschbaumer" data-en="Michaela Kerschbaumer">Michaela Kerschbaumer</span><br>
@@ -588,6 +787,40 @@
             </div>
             <div class="modal-body">
                 <img id="cardImage" src="" alt="Katalogkarte" class="card-image">
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="infoModal" class="modal">
+        <div class="info-modal-content">
+            <div class="info-modal-header">
+                <h2 data-de="Über diese Datenbank" data-en="About this Database">Über diese Datenbank</h2>
+                <button class="close-info" onclick="closeInfoModal()">&times;</button>
+            </div>
+            <div class="info-content">
+                <h3 data-de="Finanzierung" data-en="Funding">Finanzierung</h3>
+                <div class="funding-box">
+                    <p data-de="Entwickelt im Rahmen des BIOMES-Projekts (Österreichische Akademie der Wissenschaften ÖAW). Serverzugang freundlicherweise bereitgestellt von AG Bettina Weber - Uni Graz (Dank an Dipl.-Ing. Philipp Faulhammer)." data-en="Developed within the BIOMES project (Austrian Academy of Sciences ÖAW). Server access kindly provided by AG Bettina Weber - UniGraz (thanks to Dipl.-Ing. Philipp Faulhammer).">Entwickelt im Rahmen des BIOMES-Projekts (Österreichische Akademie der Wissenschaften ÖAW). Serverzugang freundlicherweise bereitgestellt von AG Bettina Weber - Uni Graz (Dank an Dipl.-Ing. Philipp Faulhammer).</p>
+                </div>
+
+                <div class="separator"></div>
+
+                <h3 data-de="Urheberrecht" data-en="Copyright">Urheberrecht</h3>
+                <div class="acknowledgment-box">
+                    <p data-de="Alle Rechte vorbehalten von Michaela Kerschbaumer." data-en="All rights reserved by Michaela Kerschbaumer.">Alle Rechte vorbehalten von Michaela Kerschbaumer.</p>
+                </div>
+
+                <div class="separator"></div>
+
+                <h3 data-de="Über die Datenbank" data-en="About the Database">Über die Datenbank</h3>
+                <p data-de="Diese Datenbank präsentiert die Literatursammlung von Univ. Prof. Dr. Reinhard Schuster. Sie ist eine digitalisierte und durchsuchbar gemachte Version der ursprünglichen Katalogkarten aus seiner wissenschaftlichen Sammlung zu Bodenbiologie und verwandten Themen." data-en="This database presents the literature collection of Univ. Prof. Dr. Reinhard Schuster. It is a digitized and searchable version of the original catalog cards from his scientific collection on soil biology and related topics.">Diese Datenbank präsentiert die Literatursammlung von Univ. Prof. Dr. Reinhard Schuster. Sie ist eine digitalisierte und durchsuchbar gemachte Version der ursprünglichen Katalogkarten aus seiner wissenschaftlichen Sammlung zu Bodenbiologie und verwandten Themen.</p>
+
+                <h3 data-de="Kontakt" data-en="Contact">Kontakt</h3>
+                <p data-de="Bei Fragen oder Anmerkungen zur Datenbank wenden Sie sich bitte an:" data-en="For questions or comments about the database, please contact:">Bei Fragen oder Anmerkungen zur Datenbank wenden Sie sich bitte an:</p>
+                <p><strong>Michaela Kerschbaumer</strong><br>
+                   <a href="mailto:michaela.kerschbaumer@uni-graz.at">michaela.kerschbaumer@uni-graz.at</a><br>
+                   <a href="https://bodenbiologie.uni-graz.at" target="_blank" rel="noopener noreferrer">bodenbiologie.uni-graz.at</a></p>
             </div>
         </div>
     </div>
@@ -680,6 +913,7 @@
             });
             
             displayResults();
+            updateInfoModalLanguage();
         }
 
         async function loadData() {
@@ -845,6 +1079,26 @@
             document.getElementById('cardModal').style.display = 'none';
         }
 
+        function openInfoModal() {
+            document.getElementById('infoModal').style.display = 'block';
+            updateInfoModalLanguage();
+        }
+
+        function closeInfoModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        function updateInfoModalLanguage() {
+            const modal = document.getElementById('infoModal');
+            const elements = modal.querySelectorAll('[data-de][data-en]');
+            elements.forEach(el => {
+                const text = el.getAttribute(`data-${currentLanguage}`);
+                if (text) {
+                    el.textContent = text;
+                }
+            });
+        }
+
         function requestWork(number, title, author) {
             const t = translations[currentLanguage];
             const subject = `${t.requestSubject} ${number}`;
@@ -855,15 +1109,21 @@
         }
 
         window.onclick = function(event) {
-            const modal = document.getElementById('cardModal');
-            if (event.target === modal) {
-                modal.style.display = 'none';
+            const cardModal = document.getElementById('cardModal');
+            const infoModal = document.getElementById('infoModal');
+            
+            if (event.target === cardModal) {
+                cardModal.style.display = 'none';
+            }
+            if (event.target === infoModal) {
+                infoModal.style.display = 'none';
             }
         }
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeModal();
+                closeInfoModal();
             }
         });
 
